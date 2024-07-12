@@ -80,7 +80,7 @@ type SquareData = {
 function App() {
   return (
       <Board>
-        <Hint color={Color.Coral}><a href="https://www.youtube.com/watch?v=HzZ_urpj4As">the way you make me feel</a></Hint>
+        <Hint color={Color.Coral}><a target="_blank" href="https://www.youtube.com/watch?v=HzZ_urpj4As">the way you make me feel</a></Hint>
         <Square animate={{ opacity: 1 }} color={Color.Indigo}>
           Poppet
         </Square>
@@ -90,7 +90,7 @@ function App() {
         <Square animate={{ opacity: 1 }} color={Color.Coral}>
           Happy
         </Square>
-        <Hint color={Color.Indigo}><a href="https://www.youtube.com/watch?v=84YK8dFyzc8">what's in a name?</a></Hint>
+        <Hint color={Color.Indigo}><a target="_blank" href="https://www.youtube.com/watch?v=84YK8dFyzc8">what's in a name?</a></Hint>
         <Square animate={{ opacity: 1 }} color={Color.Coral}>
           Proud
         </Square>
@@ -100,7 +100,7 @@ function App() {
         <Square animate={{ opacity: 1 }} color={Color.Peach}>
           Smitten
         </Square>
-        <Hint color={Color.Peach}><a href="https://www.youtube.com/watch?v=cen22TBHo9M">moments in love</a></Hint>
+        <Hint color={Color.Peach}><a target="_blank" href="https://www.youtube.com/watch?v=cen22TBHo9M">moments in love</a></Hint>
         <Square animate={{ opacity: 1 }} color={Color.Peach}>
           Exhilarating
         </Square>
