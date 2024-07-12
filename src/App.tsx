@@ -170,7 +170,7 @@ function App() {
     },
     {
       color: Color.Peach,
-      word: "Exhilarating",
+      word: "Invested",
       selected: false,
       guessed: false
     },
