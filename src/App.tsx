@@ -95,7 +95,7 @@ function App() {
           Proud
         </Square>
         <Square animate={{ opacity: 1 }} color={Color.Indigo}>
-          Partner
+          Bunny
         </Square>
         <Square animate={{ opacity: 1 }} color={Color.Peach}>
           Smitten
