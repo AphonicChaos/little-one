@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
@@ -6,11 +6,8 @@ enum Color {
   Coral,
   Indigo,
   Peach,
+  BlueMagenta,
 }
-
-type SquareProps = {
-  color: Color;
-};
 
 const COLORS = {
   [Color.Coral]: {
@@ -24,9 +21,23 @@ const COLORS = {
   [Color.Peach]: {
     bg: '#FF9A8A',
     fg: '#353535'
+  },
+  [Color.BlueMagenta]: {
+    bg: '#272640',
+    fg: '#D9BB96'
   }
 }
 
+type HintData = {
+  href: string;
+  text: string;
+  color: Color;
+}
+
+type SquareProps = {
+  color: Color;
+  selected: boolean;
+};
 
 const Square = styled(motion.div)<SquareProps>`
   width: 100px;
@@ -34,13 +45,19 @@ const Square = styled(motion.div)<SquareProps>`
   background-color: ${props => COLORS[props.color].bg};
   color: ${props => COLORS[props.color].fg};
   margin: 10px;
-  border: 4px solid #D9BB96;
+  
+  border: 4px solid #${props => props.selected ? 'D93654' : 'D9BB96'};
   border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
   font-weight: bold;
+`;
+
+const Header = styled.h1`
+  color: #D93654;
+  margin: 10px;
 `;
 
 const Board = styled(motion.div)`
@@ -74,43 +91,151 @@ const Hint = styled.h2<HintProps>`
 `
 
 type SquareData = {
-  bg: Color;
+  color: Color;
+  word: string;
+  selected: boolean;
+  guessed: boolean;
 }
 
+const isHint = (data: SquareData | HintData): data is HintData => 'href' in data;
+
 function App() {
+  const [header, setHeader] = useState("Click on related words (groups of 3)");
+  const [squares, setSquares] = useState<(SquareData | HintData)[]>([
+    {
+      href: "https://www.youtube.com/watch?v=HzZ_urpj4As",
+      text: "the way you make me feel",
+      color: Color.Coral
+    },
+    {
+      color: Color.Indigo,
+      word: "Poppet",
+      selected: false,
+      guessed: false
+    },
+    {
+      color: Color.Peach,
+      word: "Twitterpated",
+      selected: false,
+      guessed: false
+    },
+    {
+      color: Color.Coral,
+      word: "Happy",
+      selected: false,
+      guessed: false
+    },
+    {
+      href: "https://www.youtube.com/watch?v=84YK8dFyzc8",
+      text: "what's in a name?",
+      color: Color.Indigo
+    },
+    {
+      color: Color.Coral,
+      word: "Proud",
+      selected: false,
+      guessed: false
+    },
+    {
+      color: Color.Indigo,
+      word: "Bunny",
+      selected: false,
+      guessed: false
+    },
+    {
+      color: Color.Peach,
+      word: "Smitten",
+      selected: false,
+      guessed: false
+    },
+    {
+      href: "https://www.youtube.com/watch?v=cen22TBHo9M",
+      text: "moments in love",
+      color: Color.Peach
+    },
+    {
+      color: Color.Peach,
+      word: "Exhilarating",
+      selected: false,
+      guessed: false
+    },
+    {
+      color: Color.Coral,
+      word: "Content",
+      selected: false,
+      guessed: false
+    },
+    {
+      color: Color.Indigo,
+      word: "Little One",
+      selected: false,
+      guessed: false
+    },
+  ]);
+
+  useEffect(() => {
+    const guessed = squares.filter(square => !isHint(square) && square.guessed);
+    if (guessed.length === 9) {
+      setHeader("You won! Happy Birthday, Beautiful!")
+    }
+
+    const selected = squares.filter(square => !isHint(square) && square.selected)
+    if (selected.length === 3) {
+      const matches = new Set(selected.map(s => s.color));
+      const missing = matches.size - 1;
+      if (!missing) {
+        setSquares(squares.map(s => isHint(s) ? s : ({
+          ...s,
+          guessed: s.guessed ? s.guessed : s.selected,
+          selected: false
+        })));
+      } else if (missing === 2) {
+        setSquares(squares.map(s => ({
+          ...s,
+          selected: false
+        })))
+      } else {
+        alert(`${missing} away...`)
+      }
+    }
+  }, [squares])
+ 
   return (
+    <>
+      <Header>{header}</Header>
       <Board>
-        <Hint color={Color.Coral}><a target="_blank" href="https://www.youtube.com/watch?v=HzZ_urpj4As">the way you make me feel</a></Hint>
-        <Square animate={{ opacity: 1 }} color={Color.Indigo}>
-          Poppet
-        </Square>
-        <Square animate={{ opacity: 1 }} color={Color.Peach}>
-          Twitterpated
-        </Square>
-        <Square animate={{ opacity: 1 }} color={Color.Coral}>
-          Happy
-        </Square>
-        <Hint color={Color.Indigo}><a target="_blank" href="https://www.youtube.com/watch?v=84YK8dFyzc8">what's in a name?</a></Hint>
-        <Square animate={{ opacity: 1 }} color={Color.Coral}>
-          Proud
-        </Square>
-        <Square animate={{ opacity: 1 }} color={Color.Indigo}>
-          Bunny
-        </Square>
-        <Square animate={{ opacity: 1 }} color={Color.Peach}>
-          Smitten
-        </Square>
-        <Hint color={Color.Peach}><a target="_blank" href="https://www.youtube.com/watch?v=cen22TBHo9M">moments in love</a></Hint>
-        <Square animate={{ opacity: 1 }} color={Color.Peach}>
-          Exhilarating
-        </Square>
-        <Square animate={{ opacity: 1 }} color={Color.Coral}>
-          Content 
-        </Square>
-        <Square animate={{ opacity: 1 }} color={Color.Indigo}>
-          Little One
-        </Square>
+        {squares.map((data: SquareData | HintData, index: number) => (
+          isHint(data) ? (
+            <Hint key={data.text} color={data.color}>
+              <a target="_blank" href={data.href}>
+                {data.text}
+              </a>
+              </Hint>
+          ) : (
+            <Square 
+              selected={data.selected} 
+              key={data.word} 
+              animate={{ opacity: 1 }} 
+              color={data.guessed ? data.color : Color.BlueMagenta}
+              onClick={() => {
+                const newSquares = squares.map((d: SquareData | HintData, i: number) => {
+                  return i === index ? ({
+                    ...d,
+                    selected: data.guessed ? false : !data.selected
+                  }) : (
+                    d
+                  )
+                });
+
+                setSquares(newSquares);
+              }}
+            >
+              {data.word}
+            </Square>
+          )
+        ))}
       </Board>
+    </>
   )
 }
 
