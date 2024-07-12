@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 enum Color {
@@ -39,7 +38,7 @@ type SquareProps = {
   selected: boolean;
 };
 
-const Square = styled(motion.div)<SquareProps>`
+const Square = styled.div<SquareProps>`
   width: 100px;
   height: 100px;
   background-color: ${props => COLORS[props.color].bg};
@@ -55,12 +54,12 @@ const Square = styled(motion.div)<SquareProps>`
   font-weight: bold;
 `;
 
-const Header = styled.h1`
+const Header = styled.h2`
   color: #D93654;
   margin: 10px;
 `;
 
-const Board = styled(motion.div)`
+const Board = styled.div`
   display: grid;
   width: 300px;
   height: 300px;
@@ -100,7 +99,7 @@ type SquareData = {
 const isHint = (data: SquareData | HintData): data is HintData => 'href' in data;
 
 function App() {
-  const [header, setHeader] = useState("Click on related words (groups of 3)");
+  const [header, setHeader] = useState("Click on groups of three to find related words. Use the hints to the left if you get stuck.");
   const [squares, setSquares] = useState<(SquareData | HintData)[]>([
     {
       href: "https://www.youtube.com/watch?v=HzZ_urpj4As",
@@ -176,7 +175,7 @@ function App() {
   useEffect(() => {
     const guessed = squares.filter(square => !isHint(square) && square.guessed);
     if (guessed.length === 9) {
-      setHeader("You won! Happy Birthday, Beautiful!")
+      setHeader("You won! Happy Birthday, Beautiful! I'm so lucky to have met you this year.")
     }
 
     const selected = squares.filter(square => !isHint(square) && square.selected)
@@ -215,7 +214,6 @@ function App() {
             <Square 
               selected={data.selected} 
               key={data.word} 
-              animate={{ opacity: 1 }} 
               color={data.guessed ? data.color : Color.BlueMagenta}
               onClick={() => {
                 const newSquares = squares.map((d: SquareData | HintData, i: number) => {
