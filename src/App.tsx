@@ -38,6 +38,21 @@ type SquareProps = {
   selected: boolean;
 };
 
+const Dialog = styled.dialog`
+  background-color: indigo;
+  color: #E88888;
+  border-radius: 10px;
+  border: 4px solid #D9BB96;
+
+  & button {
+    border: none;
+    border-radius: 4px;
+    width: 100%;
+    background-color: #E88888;
+    color: indigo;
+  }
+`
+
 const Square = styled.div<SquareProps>`
   width: 100px;
   height: 100px;
@@ -100,6 +115,7 @@ const isHint = (data: SquareData | HintData): data is HintData => 'href' in data
 
 function App() {
   const [header, setHeader] = useState("Click on groups of three to find related words. Use the hints to the left if you get stuck.");
+  const [notification, setNotification] = useState("");
   const [squares, setSquares] = useState<(SquareData | HintData)[]>([
     {
       href: "https://www.youtube.com/watch?v=HzZ_urpj4As",
@@ -176,6 +192,7 @@ function App() {
     const guessed = squares.filter(square => !isHint(square) && square.guessed);
     if (guessed.length === 9) {
       setHeader("You won! Happy Birthday, Beautiful! I'm so lucky to have met you this year.")
+      setHeader("Good girl! I knew you could do it! Have an amazing birthday, my Little One, my Little One, my Bunny, my Precious Poppet!")
     }
 
     const selected = squares.filter(square => !isHint(square) && square.selected)
@@ -192,15 +209,20 @@ function App() {
         setSquares(squares.map(s => ({
           ...s,
           selected: false
-        })))
+        })));
+        setNotification("Not quite, but don't give up!");
       } else {
-        alert(`${missing} away...`)
+        setNotification(`${missing} away...`);
       }
     }
   }, [squares])
  
   return (
     <>
+      <Dialog open={!!notification}>
+        <h2>{notification}</h2>
+        <button onClick={() => setNotification("")}>OK</button>
+      </Dialog>
       <Header>{header}</Header>
       <Board>
         {squares.map((data: SquareData | HintData, index: number) => (
