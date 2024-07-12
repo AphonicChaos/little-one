@@ -46,37 +46,61 @@ const Board = styled(motion.div)`
   grid-template-columns: repeat(3, 1fr);
 `
 
+const Container = styled.div`
+  display: flex;
+`
+
+const Hints = styled.div`
+  margin-right: 40px;
+`
+
+type HintProps = {
+  color: Color;
+}
+const Hint = styled.h2<HintProps>`
+  padding: 10px;
+  margin-top: 10px;
+  background-color: ${props => COLORS[props.color].bg};
+  color: ${props => COLORS[props.color].fg};
+  border-radius: 10px;
+`
+
 function App() {
   return (
-  <Board>
-    <Square animate={{ opacity: 1 }} color={Color.Indigo}>
-      Word
-    </Square>
-    <Square animate={{ opacity: 1 }} color={Color.Peach}>
-      Word
-    </Square>
-    <Square animate={{ opacity: 1 }} color={Color.Coral}>
-      Word
-    </Square>
-    <Square animate={{ opacity: 1 }} color={Color.Coral}>
-      Word
-    </Square>
-    <Square animate={{ opacity: 1 }} color={Color.Indigo}>
-      Word
-    </Square>
-    <Square animate={{ opacity: 1 }} color={Color.Peach}>
-      Word
-    </Square>
-    <Square animate={{ opacity: 1 }} color={Color.Peach}>
-      Word
-    </Square>
-    <Square animate={{ opacity: 1 }} color={Color.Coral}>
-      Word
-    </Square>
-    <Square animate={{ opacity: 1 }} color={Color.Indigo}>
-      Word
-    </Square>
-  </Board>
+  <Container>
+    <Hints>
+      <Hint color={Color.Coral}>The way you make me feel</Hint>
+      <Hint color={Color.Indigo}>The way you make me feel</Hint>
+      <Hint color={Color.Peach}>The way you make me feel</Hint>
+    </Hints>
+    <Board>
+      <Square animate={{ opacity: 1 }} color={Color.Indigo}>
+        Word
+      </Square>
+      <Square animate={{ opacity: 1 }} color={Color.Peach}>
+        Word
+      </Square>
+      <Square animate={{ opacity: 1 }} color={Color.Coral}>
+        Happy
+      </Square>
+      <Square animate={{ opacity: 1 }} color={Color.Coral}>
+      </Square>
+      <Square animate={{ opacity: 1 }} color={Color.Indigo}>
+        Word
+      </Square>
+      <Square animate={{ opacity: 1 }} color={Color.Peach}>
+        Word
+      </Square>
+      <Square animate={{ opacity: 1 }} color={Color.Peach}>
+        Word
+      </Square>
+      <Square animate={{ opacity: 1 }} color={Color.Coral}>
+      </Square>
+      <Square animate={{ opacity: 1 }} color={Color.Indigo}>
+        Word
+      </Square>
+    </Board>
+  </Container>
   )
 }
 
